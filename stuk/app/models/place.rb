@@ -8,5 +8,14 @@ class Place < ActiveRecord::Base
   geocoded_by :address
   after_validation :geocode
 
-  has_many :reviews, dependent: :destroy 
+  has_many :reviews, dependent: :destroy
+
+  def total_average_rating
+    self.reviews.sum(:score) / reviews.size
+    rescue ZeroDivisionError
+      0
+  end
+
+
+
 end
